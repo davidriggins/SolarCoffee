@@ -3,7 +3,7 @@ using SolarCoffee.Web.ViewModels;
 
 namespace SolarCoffee.Web.Serialization
 {
-    public class ProductMapper
+    public static class ProductMapper
     {
 
         /// <summary>
