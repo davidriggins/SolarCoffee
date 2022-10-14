@@ -22,12 +22,17 @@ namespace SolarCoffee.Services.Inventory
         }
 
 
-        public void CreateSnapshot()
-        {
-        }
 
+        /// <summary>
+        /// Gets a ProductInventory instance by Product Id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public ProductInventory GetByProductId(int productId)
         {
+            return _db.ProductInventories
+                .Include(pi => pi.Product)
+                .FirstOrDefault(pi => pi.Product.Id == productId);
         }
 
 
@@ -43,8 +48,19 @@ namespace SolarCoffee.Services.Inventory
                 .ToList();
         }
 
+        /// <summary>
+        /// Return Snapshot histor for the previous 6 hours
+        /// </summary>
+        /// <returns></returns>
         public List<ProductInventorySnapshot> GetSnapshotHistory()
         {
+            var earliest = DateTime.UtcNow - TimeSpan.FromHours(6);
+
+            return _db.ProductInventorySnapshots
+                .Include(snap => snap.Product)
+                .Where(snap => snap.SnapshotTime > earliest
+                               && !snap.Product.IsArchived)
+                .ToList();
         }
 
         /// <summary>
@@ -69,7 +85,7 @@ namespace SolarCoffee.Services.Inventory
 
                 try
                 {
-                    CreateSnapshot();
+                    CreateSnapshot(inventory);
                 }
                 catch (Exception e)
                 {
@@ -100,6 +116,25 @@ namespace SolarCoffee.Services.Inventory
                 };
 
             }
+        }
+
+        /// <summary>
+        /// Creates a Snapshot record using the provided ProductInventory instance
+        /// </summary>
+        /// <param name="inventory"></param>
+        private void CreateSnapshot(ProductInventory inventory)
+        {
+            var now = DateTime.UtcNow;
+
+            var snapshot = new ProductInventorySnapshot
+            {
+                SnapshotTime = now,
+                Product = inventory.Product,
+                QuantityOnHand = inventory.QuantityOnHand,
+            };
+
+            _db.Add(snapshot);
+
         }
     }
 }

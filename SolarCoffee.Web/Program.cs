@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SolarCoffee.Data;
+using SolarCoffee.Services.Customer;
+using SolarCoffee.Services.Inventory;
+using SolarCoffee.Services.Order;
 using SolarCoffee.Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +19,10 @@ builder.Services.AddDbContext<SolarDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("solar.dev")));
 
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<ICustomerService, CustomerService>();
+builder.Services.AddTransient<IInventoryService, InventoryService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
