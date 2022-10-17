@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SolarCoffee.Services.Customer;
 using SolarCoffee.Services.Order;
+using SolarCoffee.Web.Serialization;
 using SolarCoffee.Web.ViewModels;
 
 namespace SolarCoffee.Web.Controllers
@@ -29,6 +30,9 @@ namespace SolarCoffee.Web.Controllers
 
             var order = OrderMapper.SerializeInvoiceToOrder(invoice);
             order.Customer = _customerService.GetCustomerById(invoice.CustomerId);
+
+            _orderService.GenerateOpenOrder(order);
+
             return Ok();
         }
     }

@@ -32,18 +32,6 @@ namespace SolarCoffee.Web.Serialization
         /// <returns></returns>
         public static Customer SerializeCustomer(CustomerModel customer)
         {
-            var address = new CustomerAddress
-            {
-                AddressLine1 = customer.PrimaryAddress.AddressLine1,
-                AddressLine2 = customer.PrimaryAddress.AddressLine2,
-                City = customer.PrimaryAddress.City,
-                State = customer.PrimaryAddress.State,
-                PostalCode = customer.PrimaryAddress.PostalCode,
-                Country = customer.PrimaryAddress.Country,
-                CreatedOn = customer.PrimaryAddress.CreatedOn,
-                UpdatedOn = customer.PrimaryAddress.UpdatedOn,
-            };
-
             return new Customer
             {
                 CreatedOn = customer.CreatedOn,
@@ -64,6 +52,7 @@ namespace SolarCoffee.Web.Serialization
         {
             return new CustomerAddressModel
             {
+                Id = address.Id,
                 AddressLine1 = address.AddressLine1,
                 AddressLine2 = address.AddressLine2,
                 City = address.City,
