@@ -5,9 +5,23 @@ using SolarCoffee.Services.Inventory;
 using SolarCoffee.Services.Order;
 using SolarCoffee.Services.Product;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//builder.Services.AddCors(options =>
+//  options.AddPolicy(MyAllowSpecificOrigins,
+//    policy =>
+//    {
+//      policy.WithOrigins("http://localhost:8080")
+//      //.AllowAnyOrigin()
+//      .AllowAnyHeader()
+//      .AllowAnyMethod();
+//    }));
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,10 +46,28 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseRouting();
+
+//app.UseCors(MyAllowSpecificOrigins);
+
+app.UseCors(builder =>
+  builder
+    .WithOrigins(
+      "http://localhost:8080",
+      "http://localhost:8081",
+      "http://localhost:8082")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+    );
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+  endpoints.MapControllers());
+
 
 app.Run();
