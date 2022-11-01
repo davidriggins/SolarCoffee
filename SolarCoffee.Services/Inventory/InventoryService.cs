@@ -70,7 +70,7 @@ namespace SolarCoffee.Services.Inventory
         /// <param name="productId">productId</param>
         /// <param name="adjustment">number of units added/removed from inventory</param>
         /// <returns></returns>
-        public ServiceResponse<ProductInventory> UpdateUnitsAvailable(int productId, int adjustment)
+        public ServiceResponse<ProductInventory> UpdateUnitsAvailable(int id, int adjustment)
         {
             var now = DateTime.UtcNow;
 
@@ -78,8 +78,9 @@ namespace SolarCoffee.Services.Inventory
             {
                 var inventory = _db.ProductInventories
                     .Include(inv => inv.Product)
-                    .First(inv => inv.Product.Id == productId);
+                    .FirstOrDefault(inv => inv.Product.Id == id);
 
+                var sql = inventory.ToString();
                 inventory.QuantityOnHand += adjustment;
 
 
@@ -101,7 +102,7 @@ namespace SolarCoffee.Services.Inventory
                 {
                     IsSuccess = true,
                     Data = inventory,
-                    Message = $"Product {productId} inventory adjusted",
+                    Message = $"Product {id} inventory adjusted",
                     Time = now,
                 };
             }

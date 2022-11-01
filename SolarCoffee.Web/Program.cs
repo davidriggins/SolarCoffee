@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using SolarCoffee.Data;
 using SolarCoffee.Services.Customer;
 using SolarCoffee.Services.Inventory;
@@ -23,7 +24,14 @@ var builder = WebApplication.CreateBuilder(args);
 //    }));
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(opts =>
+{
+  opts.SerializerSettings.ContractResolver = new DefaultContractResolver
+  {
+    NamingStrategy = new CamelCaseNamingStrategy()
+  };
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

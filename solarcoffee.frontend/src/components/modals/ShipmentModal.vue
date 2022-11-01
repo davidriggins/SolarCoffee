@@ -8,7 +8,11 @@
       <label for="product">Product Received</label>
       <select v-model="selectedProduct" class="shipmentItems" id="product">
         <option disabled value="">Please select one</option>
-        <option v-for="item in inventory" :value="item" :key="item.product.id">
+        <option
+          v-for="item in inventory"
+          :value="item.product"
+          :key="item.product.id"
+        >
           {{ item.product.name }}
         </option>
       </select>
