@@ -6,10 +6,10 @@
     <hr />
 
     <div class="inventory-actions">
-      <solar-button @click.native="showNewProductModal" id="addNewBtn">
+      <solar-button @button:click="showNewProductModal" id="addNewBtn">
         Add New Item
       </solar-button>
-      <solar-button @click.native="showShipmentModal" id="receiveShipmentBtn">
+      <solar-button @button:click="showShipmentModal" id="receiveShipmentBtn">
         Receive Shipment
       </solar-button>
     </div>
@@ -69,20 +69,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { IProduct, IProductInventory } from "@/types/Product";
-import SolarButton from "@/components/SolarButton.vue";
-import NewProductModal from "@/components/modals/NewProductModal.vue";
-import ShipmentModal from "@/components/modals/ShipmentModal.vue";
-import { IShipment } from "@/types/Shipment";
-import { InventoryService } from "@/services/inventory-service";
-import { ProductService } from "@/services/product-service";
+import { Component, Vue } from 'vue-property-decorator';
+import { IProduct, IProductInventory } from '@/types/Product';
+import SolarButton from '@/components/SolarButton.vue';
+import NewProductModal from '@/components/modals/NewProductModal.vue';
+import ShipmentModal from '@/components/modals/ShipmentModal.vue';
+import { IShipment } from '@/types/Shipment';
+import { InventoryService } from '@/services/inventory-service';
+import { ProductService } from '@/services/product-service';
 
 const inventoryService = new InventoryService();
 const productService = new ProductService();
 
 @Component({
-  name: "Inventory",
+  name: 'Inventory',
   components: { SolarButton, NewProductModal, ShipmentModal },
 })
 export default class Inventory extends Vue {
@@ -104,12 +104,12 @@ export default class Inventory extends Vue {
 
   applyColor(current: number, target: number) {
     if (current <= 0) {
-      return "red";
+      return 'red';
     }
     if (Math.abs(target - current) > 8) {
-      return "yellow";
+      return 'yellow';
     }
-    return "green";
+    return 'green';
   }
 
   closeModals() {
@@ -126,7 +126,7 @@ export default class Inventory extends Vue {
   }
 
   async saveNewShipment(shipment: IShipment) {
-    console.log("Shipment = ", shipment);
+    console.log('Shipment = ', shipment);
     await inventoryService.updateInventoryQuantity(shipment);
     this.isShipmentVisible = false;
     await this.initialize();
@@ -143,7 +143,7 @@ export default class Inventory extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/global.scss";
+@import '@/scss/global.scss';
 
 .green {
   font-weight: bold;
