@@ -65,7 +65,11 @@
         @button:click="save"
         aria-label="save new
       customer"
-      ></solar-button>
+        >Save Customer
+      </solar-button>
+      <solar-button type="button" @button:click="close" aria-label="Close modal"
+        >Close
+      </solar-button>
     </template>
   </solar-modal>
 </template>
@@ -73,7 +77,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import SolarButton from '@/components/SolarButton.vue';
-import SolarModal from '@/components/SolarModal.vue';
+import SolarModal from '@/components/modals/SolarModal.vue';
 import { ICustomer } from '@/types/Customer';
 
 @Component({
@@ -81,7 +85,13 @@ import { ICustomer } from '@/types/Customer';
   components: { SolarButton, SolarModal },
 })
 export default class NewCustomerModal extends Vue {
-  customer: ICustomer = {};
+  customer: ICustomer = {
+    primaryAddress: {},
+    createdOn: new Date(),
+    updatedOn: new Date(),
+    firstName: '',
+    lastName: '',
+  };
 
   save() {
     this.$emit('save:customer', this.customer);
